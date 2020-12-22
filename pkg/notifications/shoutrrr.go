@@ -6,6 +6,7 @@ import (
 	"github.com/containrrr/shoutrrr/pkg/types"
 	"strings"
 	"text/template"
+	"encoding/json"
 
 	"github.com/containrrr/shoutrrr"
 	t "github.com/containrrr/watchtower/pkg/types"
@@ -137,6 +138,11 @@ func getShoutrrrTemplate(c *cobra.Command) *template.Template {
 		"ToUpper": strings.ToUpper,
 		"ToLower": strings.ToLower,
 		"Title":   strings.Title,
+		"Escape":   func (in string) string {
+			var bytes, _ = json.Marshal(in)
+			var s = string(bytes)
+			return s[1:len(s)-1]
+		},
 	}
 
 	// If we succeed in getting a non-empty template configuration
